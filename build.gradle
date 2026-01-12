@@ -1,0 +1,147 @@
+// plugins {
+//     id "groovy"
+//     id "org.grails.grails-web"
+//     id "org.grails.grails-gsp"
+//     id "com.bertramlabs.asset-pipeline"
+//     id "war"
+//     id "application"
+//     id "idea"
+//     id "eclipse"
+//     id "com.github.erdi.webdriver-binaries" version "3.0"
+// }
+
+// group = "war.test"
+// version = "0.1"
+
+// repositories {
+//     mavenCentral()
+//     maven { url "https://repo.grails.org/grails/core" }
+// }
+
+// /**
+//  * Critical: prevent Micronaut Spring 4.x from sneaking into the WAR.
+//  * Grails 6.x expects Micronaut core 3.x; mixing with micronaut-spring 4.x breaks startup.
+//  */
+// configurations.configureEach {
+//   exclude group: "io.micronaut"
+//   exclude group: "io.micronaut.spring"
+//   exclude group: "io.micronaut.servlet"
+//   exclude group: "io.micronaut.validation"
+// }
+
+// tasks.named("war") {
+//   exclude("**/META-INF/spring.factories")
+//   exclude("**/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports")
+// }
+
+// dependencies {
+//     // Align Grails + its managed deps (including Micronaut core version Grails expects)
+//     implementation platform("org.grails:grails-bom:$grailsVersion")
+
+//     // Core Grails web stack
+//     implementation "org.grails:grails-core"
+//     implementation "org.grails:grails-web-boot"
+//     implementation "org.grails:grails-logging"
+//     implementation "org.grails:grails-plugin-databinding"
+//     implementation "org.grails:grails-plugin-i18n"
+//     implementation "org.grails:grails-plugin-interceptors"
+//     implementation "org.grails:grails-plugin-rest"
+//     implementation "org.grails:grails-plugin-services"
+//     implementation "org.grails:grails-plugin-url-mappings"
+
+//     implementation "org.grails.plugins:gsp"
+//     implementation "org.grails.plugins:hibernate5"
+//     implementation "org.grails.plugins:scaffolding"
+
+//     // External Tomcat deployment: don't package embedded Tomcat
+//     providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
+
+//     // Grails console (optional)
+//     console "org.grails:grails-console"
+
+//     // Runtime
+//     runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:4.3.0"
+//     runtimeOnly "com.h2database:h2"
+//     runtimeOnly "org.apache.tomcat:tomcat-jdbc"
+//     runtimeOnly "javax.xml.bind:jaxb-api:2.3.1"
+//     runtimeOnly "org.fusesource.jansi:jansi:1.18"
+//     runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
+
+//     // Test
+//     testImplementation "org.grails:grails-gorm-testing-support"
+//     testImplementation "org.grails:grails-web-testing-support"
+//     testImplementation "org.grails.plugins:geb"
+//     testImplementation "org.spockframework:spock-core"
+
+//     testImplementation "org.seleniumhq.selenium:selenium-api:4.10.0"
+//     testImplementation "org.seleniumhq.selenium:selenium-remote-driver:4.10.0"
+//     testImplementation "org.seleniumhq.selenium:selenium-support:4.10.0"
+//     testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:4.10.0"
+//     testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:4.10.0"
+//     testRuntimeOnly "org.seleniumhq.selenium:selenium-safari-driver:4.10.0"
+// }
+
+// application {
+//     mainClass.set("war.test.Application")
+// }
+
+// java {
+//     sourceCompatibility = JavaVersion.VERSION_17
+//     targetCompatibility = JavaVersion.VERSION_17
+// }
+
+// // Needed for Groovy annotation processing in a Grails app
+// tasks.withType(GroovyCompile).configureEach {
+//     groovyOptions.javaAnnotationProcessing = true
+// }
+
+// tasks.withType(Test).configureEach {
+//     useJUnitPlatform()
+//     systemProperty "geb.env", System.getProperty("geb.env")
+//     systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
+
+//     def chrome = System.getenv("CHROMEWEBDRIVER")
+//     def gecko = System.getenv("GECKOWEBDRIVER")
+//     if (chrome) systemProperty "webdriver.chrome.driver", "${chrome}/chromedriver"
+//     if (gecko) systemProperty "webdriver.gecko.driver", "${gecko}/geckodriver"
+// }
+
+// // For WAR builds with GSPs
+// tasks.withType(War).configureEach {
+//     dependsOn tasks.named("compileGroovyPages")
+// }
+
+// webdriverBinaries {
+//     chromedriver "110.0.5481.77"
+//     geckodriver "0.32.2"
+//     edgedriver "110.0.1587.57"
+// }
+
+// assets {
+//     minifyJs = true
+//     minifyCss = true
+// }
+
+
+plugins {
+  id 'java'
+  id 'war'
+}
+
+group = 'com.example'
+version = '0.1.0'
+
+java {
+  toolchain { languageVersion = JavaLanguageVersion.of(17) }
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+  // compile only so nothing gets packaged into WEB-INF/lib
+  compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+}
+
+war {
+  archiveFileName = 'war-test.war'
+}

@@ -1,0 +1,6 @@
+#Mon, 12 Jan 2026 13:24:22 -0600
+
+info.app.version=0.1
+info.app.name=war-test
+grails.env=production
+info.app.grailsVersion=6.0.0
